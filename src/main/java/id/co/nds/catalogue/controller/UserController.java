@@ -5,38 +5,39 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import id.co.nds.catalogue.entities.ProductEntity;
-import id.co.nds.catalogue.entities.ProductInfoEntity;
+import id.co.nds.catalogue.entities.UserEntity;
 import id.co.nds.catalogue.exceptions.ClientException;
 import id.co.nds.catalogue.exceptions.NotFoundException;
-import id.co.nds.catalogue.models.ProductModel;
 import id.co.nds.catalogue.models.ResponseModel;
-import id.co.nds.catalogue.services.ProductService;
+import id.co.nds.catalogue.models.UserModel;
+import id.co.nds.catalogue.services.UserService;
+
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
-@RequestMapping(value="/product")
-public class ProductController {
+@RequestMapping(value="/user")
+public class UserController {
     @Autowired
-    private ProductService productService;
+    private UserService userService;
 
     @PostMapping(value="/add")
-    public ResponseEntity<ResponseModel> postProductController(@RequestBody ProductModel productModel){
+    public ResponseEntity<ResponseModel> postUserController(@RequestBody UserModel userModel){
         try {
-            ProductEntity product = productService.add(productModel);
+            UserEntity user = userService.add(userModel);
 
             ResponseModel response = new ResponseModel();
-            response.setMsg("Product added successfully");
-            response.setData(product);
+            response.setMsg("User added successfully");
+            response.setData(user);
             return ResponseEntity.ok(response);
         } catch(ClientException e) {
             ResponseModel response = new ResponseModel();
@@ -47,17 +48,17 @@ public class ProductController {
             response.setMsg(e.getMessage());
             return ResponseEntity.internalServerError().body(response);
         }
-    }   
+    }
 
     @GetMapping(value="/get")
-    public ResponseEntity<ResponseModel> getAllProductController(){
-        try {
-            List<ProductEntity> products = productService.findAll();
+    public ResponseEntity<ResponseModel> getAllUserController() {
+        try{
+            List<UserEntity> users = userService.findAll();
             ResponseModel response = new ResponseModel();
             response.setMsg("Request successfully");
-            response.setData(products);
+            response.setData(users);
             return ResponseEntity.ok(response);
-        } catch(Exception e) {
+        }catch(Exception e) {
             ResponseModel response = new ResponseModel();
             response.setMsg(e.getMessage());
             return ResponseEntity.internalServerError().body(response);
@@ -65,80 +66,50 @@ public class ProductController {
     }
 
     @GetMapping(value="/get/search")
-    public ResponseEntity<ResponseModel> searchProductController(@RequestBody ProductModel productModel){
-        try {
-            List<ProductEntity> products = productService.findAllByCriteria(productModel);
+    public ResponseEntity<ResponseModel> searchUserController(@RequestBody UserModel userModel) {
+        try{
+            List<UserEntity> users = userService.findAllByCriteria(userModel);
             ResponseModel response = new ResponseModel();
             response.setMsg("Request successfully");
-            response.setData(products);
+            response.setData(users);
             return ResponseEntity.ok(response);
-        } catch(Exception e) {
+        }catch(Exception e) {
             ResponseModel response = new ResponseModel();
             response.setMsg(e.getMessage());
             return ResponseEntity.internalServerError().body(response);
         }
     }
 
-    @GetMapping(value="/get/info")
-    public ResponseEntity<ResponseModel> getAllByCategoryController(@RequestParam String categoryId) {
-        try { 
-            List<ProductInfoEntity> products = productService.findAllByCategory(categoryId);
+    @GetMapping(value="/get/role")
+    public ResponseEntity<ResponseModel> getUserByRoleNameController(@RequestParam String roleName) {
+        try{
+            List<UserEntity> users = userService.findAllbyRoleName(roleName);
             ResponseModel response = new ResponseModel();
             response.setMsg("Request successfully");
-            response.setData(products);
+            response.setData(users);
             return ResponseEntity.ok(response);
-        } catch(ClientException e) {
-            ResponseModel response = new ResponseModel();
-            response.setMsg(e.getMessage());
-            return ResponseEntity.badRequest().body(response);
-        } catch(NotFoundException e) {
-            ResponseModel response = new ResponseModel();
-            response.setMsg(e.getMessage());
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-        } catch(Exception e) {
+        }catch(Exception e) {
             ResponseModel response = new ResponseModel();
             response.setMsg(e.getMessage());
             return ResponseEntity.internalServerError().body(response);
         }
     }
-
-    @GetMapping(value="/get/category")
-    public ResponseEntity<ResponseModel> getProductByCategoryIdController(@RequestParam String categoryId) {
-        try { 
-            List<ProductEntity> products = productService.findProductByCategoryId(categoryId);
-            ResponseModel response = new ResponseModel();
-            response.setMsg("Request successfully");
-            response.setData(products);
-            return ResponseEntity.ok(response);
-        } catch(ClientException e) {
-            ResponseModel response = new ResponseModel();
-            response.setMsg(e.getMessage());
-            return ResponseEntity.badRequest().body(response);
-        } catch(NotFoundException e) {
-            ResponseModel response = new ResponseModel();
-            response.setMsg(e.getMessage());
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-        } catch(Exception e) {
-            ResponseModel response = new ResponseModel();
-            response.setMsg(e.getMessage());
-            return ResponseEntity.internalServerError().body(response);
-        }
-    }
+    
 
     @GetMapping(value="/get/{id}")
-    public ResponseEntity<ResponseModel> getProductByIdController(@PathVariable Integer id){
-        try {
-            ProductEntity product = productService.findById(id);
+    public ResponseEntity<ResponseModel> getUserByIdController(@PathVariable Integer id) {
+        try{
+            UserEntity user = userService.findById(id);
             ResponseModel response = new ResponseModel();
             response.setMsg("Request successfully");
-            response.setData(product);
+            response.setData(user);
             return ResponseEntity.ok(response);
         } catch(ClientException e) {
             ResponseModel response = new ResponseModel();
             response.setMsg(e.getMessage());
             return ResponseEntity.badRequest().body(response);
         } catch(NotFoundException e) {
-            ResponseModel response = new ResponseModel();
+              ResponseModel response = new ResponseModel();
             response.setMsg(e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         } catch(Exception e) {
@@ -149,15 +120,14 @@ public class ProductController {
     }
 
     @PutMapping(value="/update")
-    public ResponseEntity<ResponseModel> putProductController(@RequestBody ProductModel productModel) {
-        try {
-            ProductEntity product = productService.edit(productModel);
-
+    public ResponseEntity<ResponseModel> putUserController(@RequestBody UserModel userModel) {
+        try{
+            UserEntity userEntity = userService.edit(userModel);
             ResponseModel response = new ResponseModel();
-            response.setMsg("Product updated successfully");
-            response.setData(product);
+            response.setMsg("User updated successfully");
+            response.setData(userEntity);
             return ResponseEntity.ok(response);
-        } catch(ClientException e) {
+        }catch(ClientException e) {
             ResponseModel response = new ResponseModel();
             response.setMsg(e.getMessage());
             return ResponseEntity.badRequest().body(response);
@@ -172,17 +142,15 @@ public class ProductController {
         }
     }
 
-
-    @DeleteMapping("delete")
-    public ResponseEntity<ResponseModel> deleteProductController(@RequestBody ProductModel productModel) {
-        try {
-            ProductEntity product = productService.delete(productModel);
-
+    @DeleteMapping(value="/delete")
+    public ResponseEntity<ResponseModel> deleteUserController(@RequestBody UserModel userModel) {
+        try{
+            UserEntity userEntity = userService.delete(userModel);
             ResponseModel response = new ResponseModel();
-            response.setMsg("Product deleted successfully");
-            response.setData(product);
+            response.setMsg("User deleted successfully");
+            response.setData(userEntity);
             return ResponseEntity.ok(response);
-        } catch(ClientException e) {
+        }catch(ClientException e) {
             ResponseModel response = new ResponseModel();
             response.setMsg(e.getMessage());
             return ResponseEntity.badRequest().body(response);
@@ -196,4 +164,5 @@ public class ProductController {
             return ResponseEntity.internalServerError().body(response);
         }
     }
+
 }

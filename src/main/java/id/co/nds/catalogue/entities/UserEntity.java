@@ -2,25 +2,31 @@ package id.co.nds.catalogue.entities;
 
 import java.sql.Timestamp;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.Table;
 
 @Entity
-@Table(name = "ms_product")
-public class ProductEntity {
+@Table(name = "ms_user")
+public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name= "id")
     private Integer id;
 
-    @Column(name="name")
-    private String name;
+    @Column(name="fullname")
+    private String fullName;
 
-    @Column(name="quantity")
-    private Integer quantity;
+    @JoinColumn(name="role_id", referencedColumnName = "id")
+    @Column(name="role_id")
+    private String roleId;
 
-    @JoinColumn(name="category_id", referencedColumnName = "id")
-    @Column(name="category_id")
-    private String categoryId;
+    @Column(name="call_number")
+    private String callNumber;
 
     @Column(name="created_date")
     private Timestamp createdDate;
@@ -51,28 +57,20 @@ public class ProductEntity {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getRoleId() {
+        return roleId;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setRoleId(String roleId) {
+        this.roleId = roleId;
     }
 
-    public Integer getQuantity() {
-        return quantity;
+    public String getCallNumber() {
+        return callNumber;
     }
 
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
-    }
-
-    public String getCategoryId() {
-        return categoryId;
-    }
-
-    public void setCategoryId(String categoryId) {
-        this.categoryId = categoryId;
+    public void setCallNumber(String callNumber) {
+        this.callNumber = callNumber;
     }
 
     public Timestamp getCreatedDate() {
@@ -129,5 +127,13 @@ public class ProductEntity {
 
     public void setRecStatus(String recStatus) {
         this.recStatus = recStatus;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 }

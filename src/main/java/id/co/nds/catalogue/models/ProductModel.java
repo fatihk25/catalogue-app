@@ -1,12 +1,10 @@
 package id.co.nds.catalogue.models;
 
-public class ProductModel {
+public class ProductModel extends RecordModel {
     private Integer id;
     private String name;
     private Integer quantity;
     private String categoryId;
-    private Integer actorId;
-    private String recStatus;
 
     public Integer getId() {
         return id;
@@ -38,21 +36,5 @@ public class ProductModel {
 
     public void setCategoryId(String categoryId) {
         this.categoryId = categoryId;
-    }
-
-    public  Integer getActorId() {
-        return actorId;
-    }
-
-    public void setActorId(Integer actorId) {
-        this.actorId = actorId;
-    }
-
-    public  String getRecStatus() {
-        return recStatus;
-    }
-
-    public void setRecStatus(String recStatus) {
-        this.recStatus = recStatus;
     }
 }
