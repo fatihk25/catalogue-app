@@ -51,7 +51,7 @@ public class RoleService implements Serializable {
 
     public RoleEntity findById(String id) throws ClientException, NotFoundException {
         roleValidator.notNullCheckRoleId(id);
-        roleValidator.validatedRoleId(id);
+        roleValidator.validateRoleId(id);
         RoleEntity role = roleRepo.findById(id).orElse(null);
         roleValidator.nullCheckObject(role);
 
@@ -60,7 +60,7 @@ public class RoleService implements Serializable {
 
     public RoleEntity edit(RoleModel roleModel) throws ClientException, NotFoundException {
         roleValidator.notNullCheckRoleId(roleModel.getId());
-        roleValidator.validatedRoleId(roleModel.getId());
+        roleValidator.validateRoleId(roleModel.getId());
         roleValidator.nullCheckName(roleModel.getName());
         roleValidator.validateName(roleModel.getName());
 
@@ -91,7 +91,7 @@ public class RoleService implements Serializable {
 
     public RoleEntity delete(RoleModel roleModel) throws ClientException, NotFoundException {
         roleValidator.nullCheckRoleId(roleModel.getId());
-        roleValidator.validatedRoleId(roleModel.getId());
+        roleValidator.validateRoleId(roleModel.getId());
 
         if(!roleRepo.existsById(roleModel.getId())) {
             throw new NotFoundException("Role id not found : " + roleModel.getId());

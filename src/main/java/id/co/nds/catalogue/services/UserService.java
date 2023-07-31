@@ -88,7 +88,7 @@ public class UserService implements Serializable {
 
     public List<RoleEntity> findAllByRole(String roleId) throws ClientException, NotFoundException {
         roleValidator.nullCheckRoleId(roleId);
-        roleValidator.validatedRoleId(roleId);
+        roleValidator.validateRoleId(roleId);
         List<RoleEntity> roles = roleRepo.findUserByRoleNameWhereNoActive(roleId);
         roleRepo.findAll().forEach(roles::add);
         return roles;
